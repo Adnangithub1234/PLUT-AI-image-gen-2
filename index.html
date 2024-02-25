@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: rgb(240, 240, 240);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 400px;
+        }
+
+        .inputText {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid rgb(200, 200, 200);
+            border-radius: 20px;
+            width: 250px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 30px;
+            background-color: rgb(0, 123, 255);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            outline: none;
+        }
+
+        button:hover {
+            background-color: rgb(0, 99, 204);
+        }
+
+        .imageContainer {
+            margin-top: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-top: 0; color: rgb(0, 123, 255);">Image Generator</h1>
+        <input type="text" id="commandInput" class="inputText" placeholder="Enter command">
+        <button onclick="generateImage()">Generate Image</button>
+        <div class="imageContainer" id="imageContainer"></div>
+    </div>
+
+    <script>
+        async function generateImage() {
+            var commandInput = document.getElementById('commandInput');
+            var command = commandInput.value.toLowerCase();
+            var imageContainer = document.getElementById('imageContainer');
+
+            // Clear previous image
+            imageContainer.innerHTML = '';
+
+            // Fetch image based on command from Unsplash API
+            var response = await fetch(`https://source.unsplash.com/400x400/?${command}`);
+            if (response.ok) {
+                var imageUrl = response.url;
+                var image = document.createElement('img');
+                image.src = imageUrl;
+                imageContainer.appendChild(image);
+            } else {
+                imageContainer.textContent = 'Image not found';
+            }
+        }
+    </script>
+</body>
+</html>
